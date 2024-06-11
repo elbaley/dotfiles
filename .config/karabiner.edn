@@ -1,0 +1,396 @@
+{:profiles
+ {:SK61 {:default true
+         :alone   500 ; hold for .. ms to register single tap
+         :held    0 ; TODO: not sure what it's for
+         :delay   200 ; time after which the key press is delayed
+         :sim     100}
+         :simlayer-threshold 222
+ } ; keys need to be pressed within this threshold to be considered simultaneous
+ ;; --->TEMPLATES
+ :templates {
+             :open "osascript -e 'tell application \"%s\" to activate'"
+             :toggle "osascript -e '
+               set appName to \"%s\"
+                if application appName is running then
+                 tell application \"System Events\"
+                        if frontmost of application process appName is true then
+                                set visible of application process appName to false       
+                        else
+                                set visible of application process appName to true
+                                set frontmost of application process appName to true
+                        end if
+                end tell
+                else
+                          tell application appName to activate 
+                end if'"
+             :open-a "open a \"%s\""
+             :open-spotify "osascript -e '
+                        try
+                        tell application \"Spotify\"
+                        %s
+                        end tell
+                        end try
+                           '"
+             :open-chrome "osascript -e '
+                        set address to \"%s\"
+                        tell application \"Google Chrome\"
+                           activate
+                                if not (exists window 1) then reopen
+                                repeat with w in windows
+                                        set i to 1
+                                        repeat with t in tabs of w
+                                        if URL of t contains address then
+                                                set active tab index of w to i
+                                                set index of w to 1
+                                                return
+                                        end if
+                                        set i to i + 1
+                                        end repeat
+                                end repeat
+                                open location \"http://\" & address
+                        end tell
+                           '"
+             :type "osascript -e 'tell application \"System Events\" to keystroke \"%s\"'"
+             :paste "osascript -e '
+                        set the clipboard to \"%s\"
+                        tell application \"System Events\"
+                                keystroke \"v\" using command down
+                        end tell
+                '"
+             :dark "osascript -e '
+                tell application \"System Events\"
+                       tell appearance preferences
+                                set dark mode to not dark mode
+                       end tell
+                end tell
+                '"
+                :type_secret "osascript -e '
+                           set out to do shell script \"security find-generic-password -a $USER -s %s -w\"
+                           tell application \"System Events\" to keystroke out 
+                           '"
+             :type_password "osascript -e '
+                           set out to do shell script \"security find-generic-password -a $USER -s %s -w\"
+                           tell application \"System Events\" to keystroke out 
+                           tell application \"System Events\" to keystroke return
+                           '"}
+
+;
+ ; For application based shortcuts we need to define applications
+ :applications {;
+                :chrome ["com.google.Chrome"]
+                :code ["com.microsoft.VSCode"]
+                :spotify ["com.spotify.client"]}
+ 
+ :devices {
+           :logi [{:vendor_id 1133, :product_id 45890}]
+           :logimx [{:vendor_id 1133, :product_id  50504}]
+           :hp [{:vendor_id 1008, :product_id 20233}]
+           :macbookair [{:vendor_id 1452 :product_id 641}]
+           :macbookpro [{:location_id 45 }]
+           :mk61 [{:vendor_id 7847 :product_id 36888}]
+          }
+
+ :layers {;     
+          :caps_lock-mode {:key :caps_lock :alone {:key :escape}}
+          :spacebar-mode {:key :spacebar :alone {:key :spacebar}}}
+
+ ;; Simultaneous layers
+ :simlayers {:w-mode {:key :w} ;===> Open websites 
+             :space-mode {:key :spacebar} ; ===> Space + {Num} => Open certain app
+             :z-mode {:key :z} ; ===> Emoji mode
+             :v-mode {:key :v} ; ===> Media control 
+             :mode-mode {:key :down_arrow} ; ===> Right ctrl as layer switcher  
+             :qu-mode {:key :q :condi ["in-quit" 1]}
+             :cs-mode {:key :period :condi ["in-cs" 1]}
+             :js-mode {:key :period :condi ["in-js" 1]}
+             :swift-mode {:key :period :condi ["in-swift" 1]}
+             :rust-mode {:key :period :condi ["in-rust" 1]}
+             :py-mode {:key :period :condi ["in-python" 1]}
+             :elixir-mode {:key :period :condi ["in-elixir" 1]}
+             :snippet-mode {:key :quote}}
+
+ :main [
+          {:des "hp specific mappings"
+           :rules [:hp
+                   [:right_command :right_option]
+                   ; HP screenshot with right ctrl
+                   [:right_option :!TRC4]
+                   ;tilde and non_us backslash swap
+                   [:non_us_backslash :grave_accent_and_tilde]]
+           }
+
+          {:des "apple macbook air keyboard specific mappings"
+           :rules [:macbookair
+                   [:##non_us_backslash :grave_accent_and_tilde]
+                   [:left_control :fn]
+                   [:fn :left_control]
+                   [:right_option :!TRC4]
+                   [:!Cright_option :!TRC4]
+                   [:right_command :right_option]
+                   [:f1 :display_brightness_decrement]
+                   [:f2 :display_brightness_increment]  
+                   [:f8 :play_or_pause]
+                   [:f9 :fastforward]
+                   [:f10 :mute]
+                   [:f11 :volume_decrement]
+                   [:f12 :volume_increment]
+                  ]
+           }
+
+          {:des "apple macbook pro keyboard specific mappings"
+           :rules [:macbookpro
+                   [:##non_us_backslash :grave_accent_and_tilde]
+                   [:left_control :fn]
+                   [:fn :left_control]
+                   [:right_option :!TRC4]
+                   [:!Cright_option :!TRC4]
+                   [:right_command :right_option]
+                   [:f1 :display_brightness_decrement]
+                   [:f2 :display_brightness_increment]  
+                   [:f8 :play_or_pause]
+                   [:f9 :fastforward]
+                   [:f10 :mute]
+                   [:f11 :volume_decrement]
+                   [:f12 :volume_increment]
+                  ]
+           }
+
+           {:des "logi k380 specific mappings"
+           :rules [:logi
+                   [:##non_us_backslash :grave_accent_and_tilde]
+                   [:f9 :!COTp]
+                   [:right_command :right_option]
+                   ;; Logitech screenshot (right ctrl)
+                   [:right_option :!TRC4]
+                   [:!Cright_option :!TRC4]
+                  ]
+           }
+          {:des "logi mx keys mini specific mappings"
+                     :rules [:logimx
+                             [:##non_us_backslash :grave_accent_and_tilde]
+                             [:f9 :!COTp]
+                             [:right_command :right_option]
+                             ;; Logitech screenshot (right ctrl)
+                             [:right_option :!TRC4]
+                             [:!Cright_option :!TRC4]
+                            ]
+                     }
+
+           {:des "mk61 specific mappings"
+           :rules [:mk61
+                   [:!Tbackslash :m]
+                  ]
+           }
+
+          ; ==> Caps lock settings
+          ; Caps + CMD/SHIFT = CMD/SHIFT + Tab   && Caps + LSHIFT = ESC 
+          {:des "When caps lock is pressed with CMD or SHIFT, it should be TAB, and when pressed with LSHIFT, it should be ESC"
+           :rules [[:!Ccaps_lock :!Ctab] [:!Rcaps_lock :!Rtab] [:!Scaps_lock :escape]]}
+
+          {:des "option + m for backtick"
+             :rules [
+                     [:!Em :grave_accent_and_tilde]
+                    ]
+          }
+
+          ; ==> Option + comma : caret character
+          {:des "option + comma for caret"
+           :rules [[:!Ecomma :!S6]]}
+
+          ; ==> Spacebar layer 
+          {:des "space layer"
+           :rules [:space-mode
+          ;; Spacebar + HJKL to Mouse movements, semicolon button 1 ,quote button 2  
+                   [:##k {:mkey {:y -1500}}]
+                   [:##h {:mkey {:x -1500}}]
+                   [:##j {:mkey {:y 1500}}]
+                   [:##l {:mkey {:x 1500}}]
+                   [:##f {:mkey {:speed 2}}]
+                   [:##d {:mkey {:speed 3}}]
+                   [:##a {:mkey {:speed 0.2}}]
+                   [:##semicolon :button1]
+                   [:##quote :button2]
+                   [:left_shift [:!Cspacebar :s :t :a :r :t :s :c :return_or_enter] ] ; -> start screensaver using raycast
+                   [:right_shift [:!Cspacebar :s :s :return_or_enter] ] ; -> sleep using raycast
+                   ; Space + Left Shift = Screen saver 
+                   ; [:##n {:mkey {:speed 2}}]
+                  ]
+           }
+
+           ; ==> Caps lock layer
+           {:des   "caps_lock layer"
+            :rules [:caps_lock-mode
+                   ;; Caps as `Tab` 
+                   [:##caps_lock :##tab]
+                   [:w :##left_control]
+                   [{:pkey :button1} :!Tleft_arrow]  ; CAPS + Left click = Previous Desktop
+                   [{:pkey :button2} :!Tright_arrow]  ; CAPS + Right click = Next Desktop
+                   [{:pkey :button3} :mission_control]  ; CAPS + Middle click = Mission Control
+
+                  ; App toggles with CAPS + App No
+                   [:1 [:toggle "Telegram"]]
+                   [:2 [:toggle "Arc"]]
+                   [:3 [:toggle "Code"]]
+                   [:4 [:toggle "Notion"]]
+                   [:5 [:toggle "Safari"]]
+                   [:6 [:toggle "Reminders"]]
+                   [:r [:toggle "kitty"]]
+                   [:i [:toggle "Simulator"]]
+                   [:m [:toggle "neovide"]]
+
+                   [:!Qp {:mkey {:vwheel 100}}]
+                   [:!Qo {:mkey {:vwheel -100}}]
+
+                   ;;'Enter's MacOS Login password
+                   [:q [:type_password "myMacOsLogin"]]
+
+
+                   ;;H J K L as arrow keys only Caps
+                   [:##h :left_arrow]
+                   [:##j :down_arrow]
+                   [:##k :up_arrow]
+                   [:##l :right_arrow]
+
+                   ;; Word selection 
+                   [:##f :right_option]
+                   [:##d :right_shift]
+
+                   ;; Word deletion
+                   [:n  :!Odelete_or_backspace]
+
+                    ;; Caps + E as CMD + Tab
+                   [:e :!Ctab]
+
+                   [:open_bracket :!Copen_bracket]
+                   [:close_bracket :!Cclose_bracket]
+
+                   [:u {:mkey {:vwheel -50}}]
+                   [:p {:mkey {:vwheel 50}}]
+
+                   ; Switch between tabs
+                   [:s :!Ttab]
+                   [:a :!TRtab]
+                   ]
+            }
+
+          {:des "down arrow (actions + language switches)"
+           :rules [:mode-mode
+                   [:j [["in-python" 0] ["in-cs" 0] ["in-js" 1] ["in-elixir" 0] ["in-rust" 0] ["in-swift" 0] ["in-quit" 0]]] ; Javascript
+                   [:k [[:open "dash://.go:"] ["in-python" 0] ["in-cs" 1] ["in-js" 0] ["in-elixir" 0] ["in-rust" 0] ["in-swift" 0] ["in-quit" 0]]] ; CSharp
+                   [:l [[:open "dash://.python:"] ["in-python" 1] ["in-go" 0] ["in-js" 0] ["in-elixir" 0] ["in-rust" 0] ["in-swift" 0] ["in-quit" 0]]] ; Python
+                   [:q [["in-python" 0] ["in-go" 0] ["in-js" 0] ["in-elixir" 0] ["in-rust" 0] ["in-swift" 0] ["in-quit" 1]]] ; JS
+                  ]
+          } 
+
+          {:des "jsdot -Javascript Dot Mode"
+           :rules [:js-mode
+                   [:a [:c :o :n :s :o :l :e :period :l :o :g :!S9 :!S0  :left_arrow]] ; -> console.log()
+                   [:s [:equal_sign :!Speriod :spacebar]] ; -> =>
+                   [:d [:r :e :t :u :r :n :spacebar]] ; -> return
+                   [:f [:!Cf :c :o :n :s :o :l :e :period :l :o :g :!S9 :return_or_enter]] ; -> search console.log( in file
+                   [:g [:right_arrow :spacebar :equal_sign :!Speriod :spacebar :!Sopen_bracket :return_or_enter]] ; -> => {}
+                   [:j [:right_arrow :spacebar :equal_sign :spacebar]] ; -> =
+                   [:k [:right_arrow :spacebar :!Sopen_bracket :return_or_enter]] ; -> {  }
+                   [:z [:spacebar :s :t :y :l :e :equal_sign :!Sopen_bracket :!Sclose_bracket :left_arrow]] ; -> style={}
+                   [:c [:spacebar :c :l :a :s :s :!Sn :a :m :e :equal_sign :!Squote :!Squote :left_arrow]] ; -> className=""
+                   [:v [:paste "JavascriptMode"]] ; -> mod info
+                   [:b [:dark "👨🏻‍💻"]]]} ; -> toggle dark/light mode
+
+          {:des "csdot - C#"
+           :rules [:cs-mode
+                   [:a [:!Sc :o :n :s :o :l :e :period :!Sw :r :i :t :e :!Sl :i :n :e :!S9 :!S0 :semicolon :left_arrow :left_arrow]] ; -> Console.WriteLine();
+                   [:v [:c :s :l :a :n :g :spacebar]]
+                  ]
+          } 
+
+          ; Z > Emoji
+          {:des "zkey (emoji)"
+           :rules [:z-mode
+                   [:c [:paste "✅"]]
+                   [:w [:paste "⚠️"]]
+                   [:x [:paste "❌"]]
+                   [:v [:paste "🚀"]]
+                   [:b [:paste "🐞"]]
+                  ]
+          }
+
+          ; ==> Media Control
+          {:des "v-layer (media control)"
+           :rules [:v-mode
+                   [:a :play_or_pause] 
+                   [:s :rewind] 
+                   [:d :fastforward] 
+                   [:x [:toggle "Spotify"]]
+                   [:f :mute] 
+                   [:g :volume_decrement] 
+                   [:h :volume_increment] 
+                   [:k :!OSCr]; Room light on 
+                   [:j :!OSC2]; Room light on 
+                   [:l :!OSCi]; Monitor light on 
+                   [:semicolon :!OSCu];Monitor light off
+                   [:p :display_brightness_decrement] ;decrease brightness
+                   [:open_bracket :display_brightness_increment] ;increase brightness 
+                   [:right_shift :illumination_increment] ;; keyboard light increase
+                   [:left_shift :illumination_decrement] ;; keyboard light decrease
+                  ]
+          }
+
+          ; ==> Snippets
+          {:des "qkote key (words)"
+           :rules [:snippet-mode
+                   ; ==============> Form Values <====================
+                   [:g [:type_secret "GMAIL"]] ; -> Gmail Main Account
+                   [:o [:type_secret "OUTLOOK"]] ; -> Outlook main account
+                   [:t [:type_secret "PHONEMAIN"]] ; -> GSM
+                   [:r [:type_secret "IDENTITYNO"]] ; -> Identity number
+                   [:e [:type_secret "HOMEADDR"]] ; -> Adress
+                   [:p [:paste "-w 1236 -h 1648 -dpi 300 -idpi -2"]] ; k2pdfopt settings 
+                   ]}
+          ; ============>App Spesific Shortcutss<============
+          ;Spotify
+          {:des   "spotify"
+           :rules [:spotify
+                   [:application :!Cl]  ; Search bar focus
+                   [{:pkey :button5} :!COright_arrow] ;Forward
+                   [{:pkey :button4} :!COleft_arrow]  ;Back    
+                  ]
+          }
+
+          ;Mouse binding
+          {:des   "Mouse Keys Mode v4 (rev 1)"
+           :rules [[{:pkey :button1 :modi :left_control} :!TOleft_arrow]  ; left half with l control
+                   [{:pkey :button2 :modi :left_control} :!TOright_arrow]  ; right half with l control
+                   [{:pkey :button3 :modi :right_control} :escape]  ; ctrl + middle == escape
+                   [{:pkey :button4} [:toggle "Chrome"]]; 
+                   [{:pkey :button5} [:toggle "Code"]]; 
+                  ]
+          }
+
+          ;VSCode
+          {:des   "vscode"
+           :rules [:code
+                   [:application :play_or_pause] ; VScode media playback for courses
+                   ]
+          }
+
+        ]
+}
+
+;; rule [:period ["media-mode" 1] nil {:afterup ["media-mode" 0] :alone :period}]
+;;       |_____| |_______________| |_| |_________________________________________|
+;;        <from>    <to>      <conditions>         <other options>
+
+    ;; !  | means mandatory
+    ;; #  | means optional                 
+    ;; C  | left_command
+    ;; T  | left_control
+    ;; O  | left_option
+    ;; S  | left_shift
+    ;; F  | fn
+    ;; Q  | right_command
+    ;; W  | right_control
+    ;; E  | right_option
+    ;; R  | right_shift
+    ;; 
+    ;; !! | mandatory command + control + optional + shift (hyper)
+    ;; ## | optional any
