@@ -718,6 +718,16 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
+        'dockerfile-language-server',
+        'docker-compose-language-service',
+        'tailwindcss-language-server',
+        'prisma-language-server',
+        'prettier',
+        'eslint_d',
+        'eslint-lsp',
+        'json-lsp',
+        'lua-language-server',
+        'typescript-language-server',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
