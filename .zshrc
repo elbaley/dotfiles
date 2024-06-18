@@ -19,6 +19,9 @@ function nvims() {
 
 bindkey -s ^a "nvims\n"
 
+# Kitty ssh unknown terminal fix
+ alias ssh="TERM=xterm-256color ssh"
+
 ##NVM Config
   export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
