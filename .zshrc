@@ -5,6 +5,9 @@ alias fvim="NVIM_APPNAME=fvim nvim"
 alias nvim-chad="NVIM_APPNAME=NvChad nvim"
 alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
 
+
+export PATH=~/bin:$PATH
+
 function nvims() {
   items=("default" "kickstart" "LazyVim" "NvChad" "AstroNvim")
   config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
