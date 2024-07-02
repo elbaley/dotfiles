@@ -180,5 +180,16 @@ eval "$(pyenv init -)"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# FLUTTER
+export PATH=$HOME/Developer/flutter/bin:$PATH
+
 eval $(thefuck --alias)
 PATH=~/.console-ninja/.bin:$PATH
+
+# pnpm
+export PNPM_HOME="/Users/furkan/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
