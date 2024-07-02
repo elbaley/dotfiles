@@ -14,7 +14,7 @@ return {
         css = { 'prettier' },
         html = { 'prettier' },
         yaml = { 'prettier' },
-        markdown = { 'prettier' },
+        markdown = { 'alex' },
         lua = { 'stylua' },
       },
       format_on_save = {
