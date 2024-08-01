@@ -46,6 +46,7 @@
   "onedarkpro": { "branch": "main", "commit": "13c3244b2520a832989d797d69436df7d27e20b9" },
   "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
   "promise-async": { "branch": "main", "commit": "93540c168c5ed2b030ec3e6c40ab8bbb85e36355" },
+  "rose-pine": { "branch": "main", "commit": "375ddbeb60f41c5fd54daec5960a6ae3e8b03ee5" },
   "statuscol.nvim": { "branch": "main", "commit": "483b9a596dfd63d541db1aa51ee6ee9a1441c4cc" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "9ef21b2e6bb6ebeaf349a0781745549bbb870d27" },
   "telescope-ui-select.nvim": { "branch": "master", "commit": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2" },
