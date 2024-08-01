@@ -236,7 +236,7 @@
                    [:6 [:toggle "Reminders"]]
                    [:r [:toggle "kitty"]]
                    [:i [:toggle "Simulator"]]
-                   [:m [:toggle "neovide"]]
+                   [:m [:toggle "Obsidian"]]
 
                    [:!Qp {:mkey {:vwheel 100}}]
                    [:!Qo {:mkey {:vwheel -100}}]
