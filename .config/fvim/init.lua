@@ -170,7 +170,7 @@ vim.keymap.set('n', '<leader>c', '<cmd>:bw<cr>', { desc = 'Close buffer' })
 -- vim.keymap.set('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Previous Buffer' })
 
 -- Trouble Keymap
-vim.keymap.set('n', '<leader>xx', '<cmd>TroubleToggle<cr>', { desc = 'Trouble Toggle' })
+-- vim.keymap.set('n', '<leader>xx', '<cmd>TroubleToggle<cr>', { desc = 'Trouble Toggle' })
 
 -- Lazygit
 vim.keymap.set('n', '<leader>gg', '<cmd>:LazyGit<cr>', { desc = 'Lazygit' })
