@@ -1,7 +1,7 @@
 return {
   'nvimdev/lspsaga.nvim',
   config = function()
-    vim.keymap.set('n', 'gd', '<cmd>:Lspsaga peek_definition<cr>', { desc = 'LSPSaga: Go to definition' })
+    vim.keymap.set('n', 'gd', '<cmd>:Lspsaga goto_definition<cr>', { desc = 'LSPSaga: Go to definition' })
     vim.keymap.set('n', 'gr', '<cmd>:Lspsaga finder<cr>', { desc = 'LSPSaga: Go to references' })
     vim.keymap.set('n', 'K', '<cmd>:Lspsaga hover_doc<cr>', { desc = 'LSPSaga: Hover menu' })
     vim.keymap.set('n', '<leader>la', '<cmd>:Lspsaga code_action<cr>', { desc = 'LSPSaga: Code action' })
