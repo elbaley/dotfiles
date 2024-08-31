@@ -37,7 +37,7 @@ return {
   config = function()
     require('catppuccin').setup {
       background = {
-        light = 'latte',
+        light = 'mocha',
         dark = 'mocha',
       },
       color_overrides = {
