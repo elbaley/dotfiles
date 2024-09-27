@@ -1,11 +1,3 @@
-local function show_macro_recording()
-  local recording_register = vim.fn.reg_recording()
-  if recording_register == '' then
-    return ''
-  else
-    return 'Recording @' .. recording_register
-  end
-end
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
@@ -16,11 +8,9 @@ return {
     local lualine = require 'lualine'
     lualine.setup {
       options = {
-        theme = 'seoul256',
+        theme = 'ayu_mirage',
         component_separators = { left = '│', right = '│' },
         section_separators = { left = '', right = '' },
-        -- component_separators = { left = '', right = '' },
-        -- section_separators = { left = '', right = '' },
         globalstatus = true,
         refresh = {
           statusline = 100,
