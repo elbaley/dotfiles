@@ -229,7 +229,7 @@
 
                   ; App toggles with CAPS + App No
                    [:1 [:toggle "Telegram"]]
-                   [:2 [:toggle "Arc"]]
+                   [:2 [:toggle "Google Chrome"]]
                    [:3 [:toggle "Code"]]
                    [:4 [:toggle "Notion"]]
                    [:5 [:toggle "Safari"]]
