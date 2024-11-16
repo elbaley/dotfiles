@@ -1,3 +1,11 @@
+export GOPATH="$HOME/go"
+#export GOROOT=/usr/local/go
+#export GOBIN=$GOPATH/bin
+#export PATH=$PATH:$GOPATH
+#export PATH=$PATH:$GOROOT/bin
+
+export EDITOR='nvim'
+export VISUAL='nvim'
 #NEOVIM switcher
 alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
 alias kickvim="NVIM_APPNAME=kickstart nvim"
@@ -195,3 +203,19 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+[[ -s "/Users/furkan/.gvm/scripts/gvm" ]] && source "/Users/furkan/.gvm/scripts/gvm"
+
+[ -s "${HOME}/.g/env" ] && \. "${HOME}/.g/env"  # g shell setup
+
+
+[ -s "${HOME}/.g/env" ] && \. "${HOME}/.g/env"  # g shell setup
+
+
+[ -s "${HOME}/.g/env" ] && \. "${HOME}/.g/env"  # g shell setup
+
+# Check if the alias 'g' exists before trying to unalias it
+if [[ -n $(alias g 2>/dev/null) ]]; then
+    unalias g
+fi
