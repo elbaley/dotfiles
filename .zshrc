@@ -149,6 +149,8 @@ alias lg="lazygit"
 alias weather="curl wttr.in/Istanbul"
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC -I rc "$@"'
 alias coderadio='vlc https://coderadio-admin.freecodecamp.org/public/coderadio/playlist'
+alias gonulradio='vlc https://25543.live.streamtheworld.com/GONUL_TURKULERIAAC'
+alias virginradio='vlc https://25543.live.streamtheworld.com/VIRGIN_RADIO128AAC'
 
 # Display modes 
 alias ontop='displayplacer "id:37D8832A-2D66-02CA-B9F7-8F30A301B230 res:1512x982 hz:120 color_depth:8 enabled:true scaling:on origin:(0,0) degree:0" "id:BDE46558-2CE7-4DDA-B285-0BBE4678AE68 res:1920x1080 hz:60 color_depth:8 enabled:true scaling:on origin:(-190,-1080) degree:0"'
