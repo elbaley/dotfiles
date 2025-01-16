@@ -1,5 +1,6 @@
 -- vim.opt.termguicolors = true
 require 'furkan.core.keymaps'
+
 --[[
 
 =====================================================================
@@ -444,6 +445,12 @@ require('lazy').setup {
         --  All the info you're looking for is in `:help telescope.setup()`
         defaults = {
           layout_strategy = 'vertical',
+          mappings = {
+            n = {
+              -- close buffer with d
+              ['d'] = require('telescope.actions').delete_buffer,
+            },
+          },
         },
         -- pickers = {}
         extensions = {
@@ -478,6 +485,7 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<S-h>', '<cmd>Telescope buffers sort_mru=true sort_lastused=true initial_mode=normal<cr>', { desc = '[P] Open Telescope buffers' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>f', builtin.buffers, { desc = '[ ] Find existing buffers' })
       -- INFO: changed above in favor of arena.nvim
