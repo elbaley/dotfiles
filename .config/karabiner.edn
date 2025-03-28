@@ -83,7 +83,8 @@
  
  :devices {
            :logi [{:vendor_id 1133, :product_id 45890}]
-           :logimx [{:vendor_id 1133, :product_id  50504}]
+           ; :logimx [{:vendor_id 1133, :product_id  50504}]
+           :logimx [{:vendor_id 1133, :product_id  45934}]
            :hp [{:vendor_id 1008, :product_id 20233}]
            :macbookair [{:vendor_id 1452 :product_id 641}]
            :macbookpro [{:location_id 45 }]
@@ -229,7 +230,8 @@
 
                   ; App toggles with CAPS + App No
                    [:1 [:toggle "Telegram"]]
-                   [:2 [:toggle "Google Chrome"]]
+                   ; [:2 [:toggle "Google Chrome"]]
+                   [:2 [:toggle "Zen"]]
                    [:3 [:toggle "Code"]]
                    [:4 [:toggle "Notion"]]
                    [:5 [:toggle "Safari"]]
