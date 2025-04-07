@@ -7,17 +7,14 @@ export GOPATH="$HOME/go"
 export EDITOR='nvim'
 export VISUAL='nvim'
 #NEOVIM switcher
-alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
-alias kickvim="NVIM_APPNAME=kickstart nvim"
 alias fvim="NVIM_APPNAME=fvim nvim"
 alias nvim-chad="NVIM_APPNAME=NvChad nvim"
-alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
 
 
 export PATH=~/bin:$PATH
 
 function nvims() {
-  items=("default" "kickstart" "LazyVim" "NvChad" "AstroNvim")
+  items=("default" "NvChad" "fvim")
   config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
   if [[ -z $config ]]; then
     echo "Nothing selected"
@@ -38,7 +35,7 @@ bindkey -s ^a "nvims\n"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-export PATH="`yarn global bin`:$PATH"
+#export PATH="`yarn global bin`:$PATH"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -115,8 +112,8 @@ ss() {
     command bun "$@"
   elif [[ -f pnpm-lock.yaml ]]; then
     command pnpm "$@"
-  elif [[ -f yarn.lock ]]; then
-    command yarn "$@"
+  # elif [[ -f yarn.lock ]]; then
+  #   command yarn "$@"
   elif [[ -f package-lock.json ]]; then
     command npm "$@"
   else
