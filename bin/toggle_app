@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+app="$1"
+osascript -e "set appName to \"$app\"" \
+ -e 'if application appName is running then' \
+ -e 'tell application "System Events"' \
+ -e 'if frontmost of application process appName is true then' \
+ -e 'set visible of application process appName to false' \
+ -e 'else' \
+ -e 'set visible of application process appName to true' \
+ -e 'set frontmost of application process appName to true' \
+ -e 'end if' \
+ -e 'end tell' \
+ -e 'else' \
+ -e 'tell application appName to activate' \
+ -e 'end if'
