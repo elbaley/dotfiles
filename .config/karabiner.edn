@@ -68,6 +68,10 @@
                            set out to do shell script \"security find-generic-password -a $USER -s %s -w\"
                            tell application \"System Events\" to keystroke out 
                            '"
+
+                :switch_to_input "osascript -e '
+                           set out to do shell script \"/Users/furkan/.local/bin/lunar set input %s\"
+                           '"
              :type_password "osascript -e '
                            set out to do shell script \"security find-generic-password -a $USER -s %s -w\"
                            tell application \"System Events\" to keystroke out 
@@ -170,6 +174,7 @@
                      :rules [:logimx
                              [:##non_us_backslash :grave_accent_and_tilde]
                              [:f9 :!COTp]
+                             [:right_arrow :!CSspacebar]
                              [:right_command :right_option]
                              ;; Logitech screenshot (right ctrl)
                              [:right_option :!TRC4]
@@ -230,12 +235,13 @@
 
                   ; App toggles with CAPS + App No
                    [:1 [:toggle "Telegram"]]
-                   ; [:2 [:toggle "Google Chrome"]]
-                   [:2 [:toggle "Zen"]]
-                   [:3 [:toggle "Code"]]
-                   [:4 [:toggle "Notion"]]
+                   [:2 [:toggle "Google Chrome"]]
+                   ; [:2 [:toggle "Zen"]]
+                   [:3 [:toggle "Slack"]]
+                   [:4 [:toggle "Postman"]]
                    [:5 [:toggle "Safari"]]
                    [:6 [:toggle "Reminders"]]
+                   [:0 [:toggle "DeskPad"]]
                    [:r [:toggle "kitty"]]
                    [:i [:toggle "Simulator"]]
                    [:m [:toggle "Obsidian"]]
@@ -245,6 +251,8 @@
 
                    ;;'Enter's MacOS Login password
                    [:q [:type_password "myMacOsLogin"]]
+
+                   [:equal_sign [:switch_to_input "LGHDMI"]]
 
 
                    ;;H J K L as arrow keys only Caps
