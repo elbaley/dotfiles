@@ -1,0 +1,226 @@
+;; Kanata docs
+;; https://github.com/jtroo/kanata/blob/main/docs/config.adoc
+
+;; OS key code mappings
+;; https://github.com/jtroo/kanata/blob/main/parser/src/keys/mod.rs
+
+(defcfg
+  process-unmapped-keys yes
+  log-layer-changes no
+  danger-enable-cmd yes
+  concurrent-tap-hold yes
+  ;; When any non-chord activation happens, this timeout begins. Until this timeout expires
+  ;; all inputs will immediately skip chords processing and be processed by the active layer.
+  ;; chords-v2-min-idle 250
+)
+
+;; Variables
+(defvar
+ tap-time 300
+ hold-time 300
+ chord-time 60
+ mouse-accel-time 500
+ mwheel-speed 100
+ mouse-min-speed 3
+ mouse-max-speed 10
+ fast-mouse-accel-time 100
+ fast-mouse-min-speed 10
+ fast-mouse-max-speed 20
+)
+
+;; Only one defsrc is allowed.
+;;
+;; defsrc defines the keys that will be intercepted by kanata. The order of the
+;; keys matches with deflayer declarations and all deflayer declarations must
+;; have the same number of keys as defsrc. Any keys not listed in defsrc will
+;; be passed straight to the operating system.
+(defsrc
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]
+  caps   a    s    d    f    g    h    j    k    l    ;    '   \  ret
+  lsft  ` z    x    c    v    b    n    m    ,    .    /    ▲   rsft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶
+)
+
+
+;; applications aliases
+(defalias
+  atelegram (cmd "/Users/furkan/bin/toggle_app" "Telegram")
+  achrome (cmd "/Users/furkan/bin/toggle_app" "Google Chrome")
+  aslack (cmd "/Users/furkan/bin/toggle_app" "Slack")
+  apostman (cmd "/Users/furkan/bin/toggle_app" "Postman")
+  akitty (cmd "/Users/furkan/bin/toggle_app" "kitty")
+  asimulator (cmd "/Users/furkan/bin/toggle_app" "Simulator")
+  aobsidian (cmd "/Users/furkan/bin/toggle_app" "Obsidian")
+)
+
+;; (defchords bas-chords 200
+;;   (            kbs) (tap-hold-release 200 200 s (unicode "ş"))
+;; )
+
+;; snippet aliases
+(defalias
+  type-macos-login (cmd sudo -u furkan bash "/Users/furkan/bin/type_password" "myMacOsLogin")
+  type-gmail (cmd sudo -u furkan bash  "/Users/furkan/bin/type_secret" "GMAIL")
+  type-outlook (cmd sudo -u furkan bash  "/Users/furkan/bin/type_secret" "OUTLOOK")
+  type-adress (cmd sudo -u furkan bash  "/Users/furkan/bin/type_secret" "HOUSE")
+  type-gsm (cmd sudo -u furkan bash  "/Users/furkan/bin/type_secret" "PHONEMAIN")
+  type-identity (cmd sudo -u furkan bash  "/Users/furkan/bin/type_secret" "IDENTITYNO")
+)
+
+;; mouse aliases
+(defalias
+ movemouse-left (movemouse-accel-left 10 500 $mouse-min-speed $mouse-max-speed)
+)
+
+(defalias
+  ;; Modifier keys
+  mlmet (tap-hold $tap-time $hold-time d lmet)
+  mrmet (tap-hold $tap-time $hold-time k rmet)
+  mlalt (tap-hold $tap-time $hold-time f lalt)
+  mralt (tap-hold $tap-time $hold-time j ralt)
+  mral2 (tap-hold $tap-time $hold-time ' ralt)
+  mlctl (tap-hold $tap-time $hold-time a lctl)
+  mrctl (tap-hold $tap-time 200 l lctl)
+  mfntab (tap-hold $tap-time $hold-time tab fn)
+  mmtab (tap-hold $tap-time $hold-time z M-tab)
+  mmgrv (tap-hold $tap-time $hold-time x M-grv)
+  mescc (tap-hold $tap-time $hold-time esc caps)
+  ;; maltt (tap-hold $tap-time $hold-time b (macro @aghost 100 C-b 20 spc)) ;; tmux alternate session
+  ;; mtcop (tap-hold $tap-time $hold-time m (macro @aghost 100 C-b 20 v)) ;; tmux copy mode
+  mretu (tap-hold $tap-time $hold-time tab ret)
+
+  ;; Other layers tap-hold-press
+  ;; mapr configured for both the glove80 and the macbook keyboard
+  mappr (tap-hold-press $tap-time $hold-time ret (layer-toggle apps))
+  msymb (tap-hold-press $tap-time $hold-time bspc (layer-toggle symb))
+  mcaps (tap-hold-press $tap-time $hold-time esc (layer-toggle capslayer))
+  mdot (tap-hold-press $tap-time $hold-time . (layer-toggle dotlayer))
+  mquote (tap-hold-press $tap-time $hold-time ' (layer-toggle quoteLayer))
+  mspc (tap-hold $tap-time $hold-time spc (layer-toggle spaceLayer)) 
+  mfaster (tap-hold-press $tap-time $hold-time (layer-toggle spaceLayerFaster) (layer-toggle spaceLayerFaster)) 
+
+  mshft (tap-hold-press $tap-time $hold-time esc (layer-toggle shiftLayer))
+
+  ;; Other layers tap-hold
+  msyst (tap-hold $tap-time $hold-time s (layer-toggle syst))
+
+
+  ;; Multi
+  mhypr (tap-hold $tap-time $hold-time spc (multi lsft lctl lalt lmet)) ;; Hyper key
+  mconsolelog (tap-hold $tap-time $hold-time a (macro c o n s o l e . l o g S-9 S-0)) ;; log
+
+  ;; Execute script
+  ;; maltt (cmd open "btt://execute_assigned_actions_for_trigger/?uuid=F35EF770-FAA5-448A-957D-70BB449DEB0F")
+
+  ;; key and script at the same time
+  ;; maltt (tap-hold $tap-time $hold-time lsft (cmd open "btt://execute_assigned_actions_for_trigger/?uuid=F35EF770-FAA5-448A-957D-70BB449DEB0F"))
+
+  ;; Turkish accent 
+  ;;  s-accent-old (tap-dance 120 ((chord bas-chords kbs) s))
+  s-accent (tap-hold $tap-time $hold-time s  (unicode "ş"))
+  s-accent-upper (tap-hold $tap-time $hold-time S-s  (unicode "Ş"))
+  i-accent (tap-hold $tap-time $hold-time i  (unicode "ı"))
+  i-accent-upper (tap-hold $tap-time $hold-time S-i  (unicode "İ"))
+  g-accent (tap-hold $tap-time $hold-time g  (unicode "ğ"))
+  g-accent-upper (tap-hold $tap-time $hold-time S-g  (unicode "Ğ"))
+  u-accent (tap-hold $tap-time $hold-time u  (unicode "ü"))
+  u-accent-upper (tap-hold $tap-time $hold-time S-u  (unicode "Ü"))
+  c-accent (tap-hold $tap-time $hold-time c  (unicode "ç"))
+  c-accent-upper (tap-hold $tap-time $hold-time S-c  (unicode "Ç"))
+  o-accent (tap-hold $tap-time $hold-time o  (unicode "ö"))
+  o-accent-upper (tap-hold $tap-time $hold-time S-o  (unicode "Ö"))
+)
+
+(defalias
+  1 1
+  8 8
+  7 7
+)
+
+;; Set cmd on "d" due to cmd+r, cmd+f
+(deflayer main
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @mretu    q    w    e    r    t    y    @u-accent    @i-accent    @o-accent    p    [    ]
+  @mcaps   a    @s-accent    @mlmet    @mlalt    @g-accent    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  ret
+  @mshft  ` z    @mmgrv    @c-accent    v    b    n    m    ,    @mdot    /    ▲   @mshft
+  fn   lctl  lalt lmet          @mspc         rmet ralt ◀    ▼    ▶  
+)       
+
+(deflayer shiftLayer 
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  IntlBackslash    S-1    S-2    S-3    S-4    S-5    S-6    S-7    S-8    S-9    S-0    S--    S-=    bspc
+  S-tab    S-q    S-w    S-e    S-r    S-t    S-y    @u-accent-upper    @i-accent-upper    @o-accent-upper    S-p    S-[    S-]
+  @mcaps   S-a    @s-accent-upper    S-d   S-f    @g-accent-upper    S-h    S-j    S-k    S-l   S-;    S-'   S-\  S-ret
+  lsft  S-` S-z    S-x    @c-accent-upper    S-v    S-b    S-n    S-m    S-,    S-.    S-/    ▲   rsft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
+)   
+
+;; caps_layer                                  J                                                                                                                                                               
+(deflayer capslayer    
+  ;;   a      s       d       f       g       h       j       k       l       ;       '
+  esc    🔅   🔆    f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  IntlBackslash    @atelegram    @achrome    @aslack    @apostman    5   6    7    8    9    0    -    =    bspc
+  tab    @type-macos-login    w    e    @akitty    t    y    u    @asimulator    o    p    [    ]
+  caps   C-S-tab    C-tab     rsft    ralt    g    ◀       ▼       ▲       ▶      ;    '   \  ret
+  lsft  ` z    x    c    v    b    A-bspc    @aobsidian   ,    .    /    ▲   rsft
+  fn   lctl  lalt lmet          C-a         rmet ralt ◀    ▼    ▶
+)
+
+(deflayer dotlayer
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    (unicode 💀)    e    r    t    y    u    i    o    p    [    ]
+  caps   (macro c o n s o l e . l o g S-9 S-0 ◀)    (macro = S-.)    d    f    g    h    j    k    l    ;    '   \  ret
+  lsft  ` z    (unicode ❌)    (unicode ✅)    (unicode 🚀)    (unicode 🐞)    n    m    ,    .    /    ▲   rsft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶
+)
+
+(deflayer quoteLayer
+  ;;     a      s      d      f      g      h     j      k      l      ;     | -w 1236 -h 1648 -dpi 300 -idpi -2
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @mretu    q    w    @type-adress    @type-identity    @type-gsm    y    @u-accent    @i-accent    @type-outlook    (macro - w spc Digit1 Digit2 Digit3 Digit6 spc - h spc Digit1 Digit6 Digit4 Digit8 spc - d p i spc  Digit3 Digit0 Digit0 spc - i d p i spc - Digit2)    [    ]
+  @mcaps   a    @s-accent    @mlmet    @mlalt    @type-gmail    h    @mralt    @mrmet    @mrctl    ;    '   \  ret
+  @mshft  ` z    x    @c-accent    v    b    n    m    ,    @mdot    /    ▲   @mshft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
+) 
+
+(deflayer spaceLayer
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @mretu    q    w    e    r    t    y    @u-accent    @i-accent    @o-accent    p    [    ]
+  @mcaps   (macro 500 mlft)    @s-accent    @mlmet    @mfaster    @g-accent    @movemouse-left  (movemouse-accel-down 10 500 $mouse-min-speed $mouse-max-speed)   (movemouse-accel-up 10 500 $mouse-min-speed $mouse-max-speed)    (movemouse-accel-right 10 500 $mouse-min-speed $mouse-max-speed)   mlft    mrgt   \  ret
+  @mshft  ` z    @mmgrv    @c-accent    v    b    n    m    ,    @mdot    /    ▲   @mshft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
+)  
+
+(deflayer spaceLayerFaster
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @mretu    q    w    e    r    t    y    @u-accent    @i-accent    @o-accent    p    [    ]
+  @mcaps   a    @s-accent    @mlmet    @mlalt    @g-accent    (movemouse-accel-left 10 200 $fast-mouse-min-speed $fast-mouse-max-speed)    (movemouse-accel-down 10 200 $mouse-min-speed $mouse-max-speed)   (movemouse-accel-up 10 200 $mouse-min-speed $mouse-max-speed)    (movemouse-accel-right 10 200 $mouse-min-speed $mouse-max-speed)   mlft    mrgt   \  ret
+  @mshft  ` z    @mmgrv    @c-accent    v    b    n    m    ,    @mdot    /    ▲   @mshft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
+)  
+
+(deflayer apps
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]
+  caps   a    s    d    f    g    h    j    k    l    ;    '   \  ret
+  lsft  ` z    x    c    v    b    n    m    ,    .    /    ▲   rsft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶
+)
+
+(defchordsv2
+  ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
+  (1 2 3) volu $chord-time first-release ()
+  ([ p ]) vold $chord-time first-release ()
+)
