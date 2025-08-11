@@ -21,7 +21,7 @@
         <!-- <string>sudo</string> -->
         <string>launchctl</string>
         <string>asuser</string>
-        <string>501</string> <!-- user UID -->
+        <string>501</string> <!-- user UID can be retrived by `id -u $username` -->
         <string>/usr/local/bin/kanata</string> <!-- location of kanata binary-->
         <string>-c</string>
         <string>/Users/furkan/.config/kanata/config.kbd</string>
@@ -40,4 +40,15 @@
     <string>/tmp/kanata.err</string>
 </dict>
 </plist>
+```
+
+### LaunchDaemon commands
+
+```bash
+sudo launchctl load /Library/LaunchDaemons/com.furkan.kanata.plist
+```
+
+
+```bash
+sudo launchctl start com.furkan.kanata
 ```
