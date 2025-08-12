@@ -123,6 +123,7 @@ ss() {
 
 # Aliases
 alias c="clear"
+alias la="eza -la --icons --header"
 alias nrs="npm start"
 alias nrb="npm run build"
 alias nrd="npm run dev"
