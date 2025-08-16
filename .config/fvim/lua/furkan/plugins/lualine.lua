@@ -8,7 +8,7 @@ return {
     local lualine = require 'lualine'
     lualine.setup {
       options = {
-        theme = 'ayu_mirage',
+        theme = 'ayu_dark',
         component_separators = { left = '│', right = '│' },
         section_separators = { left = '', right = '' },
         globalstatus = true,

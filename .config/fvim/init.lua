@@ -155,6 +155,11 @@ vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+--
+--
+-- C-d & C-u disorientation fix
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Center cursor after moving down half-page' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Center cursor after moving up half-page' })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -829,7 +834,7 @@ require('lazy').setup {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- Load the colorscheme here
-      vim.cmd [[colorscheme tokyonight-moon]]
+      -- vim.cmd [[colorscheme tokyonight-moon]]
 
       -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
