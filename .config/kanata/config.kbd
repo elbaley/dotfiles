@@ -44,6 +44,11 @@
 )
 
 
+;; 
+(defalias
+  toggledarkmode (cmd "/Users/furkan/bin/toggle_dark_mode")
+)
+
 ;; applications aliases
 (defalias
   atelegram (cmd "/Users/furkan/bin/toggle_app" "Telegram")
@@ -103,8 +108,9 @@
 
   mnum (layer-switch numLayer)
   mnumtoggle (layer-switch main)
+  mnumlyr (layer-toggle numLayer)
 
-  mshft (tap-hold-press $tap-time $hold-time esc (layer-toggle shiftLayer))
+  mshft (tap-hold-press $tap-time $hold-time rshft (layer-toggle shiftLayer))
 
   ;; Other layers tap-hold
   ;; msyst (tap-hold $tap-time $hold-time s (layer-toggle syst))
@@ -146,11 +152,11 @@
 (deflayer main
   ;;     a      s      d      f      g      h     j      k      l      ;      '
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
-  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    XX
+  @mnum    1    2    3    4    5    6    7    8    9    0    -    =    XX
   @mretu    q    w    e    r    t    y    @u-accent    @i-accent    @o-accent    p    [    ]
   @mcaps   @mlctl    @s-accent    @mlmet    @mlalt    @g-accent    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  ret
   @mshft  ` z    @mmgrv    @c-accent    v    b    n    m    ,    @mdot    /    ▲   @mshft
-  fn   lctl  lalt @mnum          @mspc         bspc M-C-S-4 ◀    ▼    M-S-spc  
+  fn   M-C-S-0  lalt XX          @mspc         bspc M-C-S-4 ◀    ▼    M-S-spc  
 )       
 
 ;; num_layer
@@ -158,10 +164,10 @@
   ;;     a      s      d      f      g      h     j      k      l      ;      '
   XX    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    bspc
-  XX    XX    XX    XX    XX    XX    XX    7    8    9    XX    XX    XX
-  XX   XX    XX    XX    XX    XX    XX    4    5    6    XX    XX   XX  ret
-  XX  XX XX    XX    XX    XX    XX    XX    1    2    3    .    XX   XX
-  XX   XX  XX @mnumtoggle          bspc         0 XX XX    XX    XX  
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX   1    2    3    4    5    6    7    8    9    0    XX   XX  @mnumtoggle 
+  XX  XX XX    XX    XX    XX    XX    XX    XX    ,    .    XX    XX   XX
+  XX   XX  XX XX          spc         bspc XX XX    XX    XX  
 )
 
 (deflayer shiftLayer 
@@ -191,7 +197,7 @@
   tab    q    (unicode 💀)    e    r    t    y    u    i    o    p    [    ]
   caps   (macro c o n s o l e . l o g S-9 S-0 ◀)    (macro = S-.)    d    f    g    h    j    k    l    ;    '   \  ret
   lsft  ` z    (unicode ❌)    (unicode ✅)    (unicode 🚀)    (unicode 🐞)    n    m    ,    .    /    ▲   rsft
-  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶
+  fn   lctl  lalt lmet          @toggledarkmode         rmet ralt ◀    ▼    ▶
 )
 
 (deflayer quoteLayer
@@ -235,6 +241,9 @@
 
 (defchordsv2
   ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
-  (1 2 3) volu $chord-time first-release ()
-  ([ p ]) vold $chord-time first-release ()
+  (1 2 3) vold $chord-time first-release ()
+  ([ p ]) volu $chord-time first-release ()
+  (IntlBackslash 1 2) 🔅 $chord-time first-release ()
+  (0 - =) 🔆 $chord-time first-release ()
+  (rshft mlft) (macro rshft 5 mlft) $chord-time first-release ()
 )
