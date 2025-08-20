@@ -43,10 +43,18 @@
   fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶
 )
 
+(deftemplate charmod (char mod)
+  (switch 
+    ((key-timing 3 less-than 250)) $char break
+    () (tap-hold-release-timeout 200 500 $char $mod $char) break
+  )
+)
+
 
 ;; 
 (defalias
   toggledarkmode (cmd "/Users/furkan/bin/toggle_dark_mode")
+  maximizeapp (cmd "/Users/furkan/bin/maximize")
 )
 
 ;; applications aliases
@@ -81,14 +89,34 @@
 
 (defalias
   ;; Modifier keys
-  mlmet (tap-hold $tap-time $hold-time d lmet)
-  mrmet (tap-hold $tap-time $hold-time k rmet)
-  mlalt (tap-hold $tap-time $hold-time f lalt)
-  mralt (tap-hold $tap-time $hold-time j ralt)
-  mral2 (tap-hold $tap-time $hold-time ' ralt)
-  mlctl (tap-hold $tap-time $hold-time a lctl)
-  mrctl (tap-hold $tap-time 200 l lctl)
+  mlmetOLD (tap-hold $tap-time $hold-time d lmet)
+  mlmet (t! charmod d lmet)
+
+  mrmetOLD (tap-hold $tap-time $hold-time k rmet)
+  mrmet (t! charmod k rmet)
+
+
+  mlaltOLD (tap-hold $tap-time $hold-time f lalt)
+  mlalt (t! charmod f lalt)
+
+  mraltOLD (tap-hold $tap-time $hold-time j ralt)
+  mralt (t! charmod j lalt)
+
+  mral2OLD (tap-hold $tap-time $hold-time ' ralt)
+  mral2 (t! charmod ' ralt)
+
+
+  mlctlOLD (tap-hold $tap-time $hold-time a lctl)
+  mlctl (t! charmod a lctl)
+
+
+  mrctlOLD (tap-hold $tap-time 200 l lctl)
+  mrctl (t! charmod l rctl)
+
+
   mfntab (tap-hold $tap-time $hold-time tab fn)
+
+
   mmtab (tap-hold $tap-time $hold-time z M-tab)
   mmgrv (tap-hold $tap-time $hold-time x M-grv)
   mescc (tap-hold $tap-time $hold-time esc caps)
@@ -196,7 +224,7 @@
   IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab    q    (unicode 💀)    e    r    t    y    u    i    o    p    [    ]
   caps   (macro c o n s o l e . l o g S-9 S-0 ◀)    (macro = S-.)    d    f    g    h    j    k    l    ;    '   \  ret
-  lsft  ` z    (unicode ❌)    (unicode ✅)    (unicode 🚀)    (unicode 🐞)    n    m    ,    .    /    ▲   rsft
+  lsft  ` z    (unicode ❌)    (unicode ✅)    (unicode 🚀)    (unicode 🐞)    n    @maximizeapp    ,    .    /    ▲   rsft
   fn   lctl  lalt lmet          @toggledarkmode         rmet ralt ◀    ▼    ▶
 )
 
