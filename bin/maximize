@@ -1,0 +1,26 @@
+#!/bin/bash
+
+osascript <<'END'
+tell application "Finder"
+    set screenBounds to bounds of window of desktop
+    set screenWidth to item 3 of screenBounds
+    set screenHeight to item 4 of screenBounds
+end tell
+
+tell application "System Events"
+    set frontApp to name of first application process whose frontmost is true
+    
+    tell application frontApp
+        activate
+    end tell
+    
+    tell process frontApp
+        set frontWindow to front window
+        tell frontWindow
+            set position to {0, 24}
+            set size to {screenWidth, screenHeight - 24}
+        end tell
+    end tell
+end tell
+END
+
