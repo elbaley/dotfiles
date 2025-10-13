@@ -2,9 +2,11 @@ return {
   'folke/noice.nvim',
   event = 'VeryLazy',
   opts = {
+
     -- add any options here
     routes = {
       { filter = { find = 'E162' }, view = 'mini' },
+      { filter = { event = 'msg_show', kind = '', find = '%no code' }, view = 'mini' },
       { filter = { event = 'msg_show', kind = '', find = 'written' }, view = 'mini' },
       { filter = { event = 'msg_show', kind = '', find = '[w]' }, view = 'mini' },
       { filter = { event = 'msg_show', kind = '', find = '%--' }, view = 'mini' },

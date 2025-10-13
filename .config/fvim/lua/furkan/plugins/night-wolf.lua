@@ -4,6 +4,6 @@ return {
   priority = 1000,
   opts = {},
   config = function()
-    vim.cmd [[colorscheme nightwolf-black]]
+    -- vim.cmd [[colorscheme nightwolf-black]]
   end,
 }
