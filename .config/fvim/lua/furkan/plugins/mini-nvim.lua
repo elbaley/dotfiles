@@ -16,9 +16,23 @@ return { -- Collection of various small independent plugins/modules
     -- - sr)'  - [S]urround [R]eplace [)] [']
     require('mini.surround').setup()
 
-    require('mini.files').setup()
+    require('mini.files').setup {
+      -- Customization of explorer windows
+      windows = {
+        -- Maximum number of windows to show side by side
+        max_number = math.huge,
+        -- Whether to show preview of file/directory under cursor
+        preview = true,
+        -- Width of focused window
+        width_focus = 50,
+        -- Width of non-focused window
+        width_nofocus = 15,
+        -- Width of preview window
+        width_preview = 25,
+      },
+    }
 
-    vim.keymap.set('n', '<leader>-', function()
+    vim.keymap.set('n', '<leader>e', function()
       local buf_name = vim.api.nvim_buf_get_name(0)
       local path = vim.fn.filereadable(buf_name) == 1 and buf_name or vim.fn.getcwd()
       MiniFiles.open(path)
