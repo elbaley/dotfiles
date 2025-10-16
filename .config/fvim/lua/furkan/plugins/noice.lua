@@ -1,8 +1,11 @@
 return {
   'folke/noice.nvim',
-  event = 'VeryLazy',
-  opts = {
 
+  event = 'VeryLazy',
+  keys = {
+    { '<leader>dn', '<cmd>NoiceDismiss<cr>', desc = '[D]elete [N]otifications' },
+  },
+  opts = {
     -- add any options here
     routes = {
       { filter = { find = 'E162' }, view = 'mini' },
