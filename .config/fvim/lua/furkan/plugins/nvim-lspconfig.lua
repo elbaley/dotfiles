@@ -94,6 +94,24 @@ return { -- LSP Configuration & Plugins
       -- But for many setups, the LSP (`tsserver`) will work just fine
       -- tsserver = {},
       --
+      vtsls = {
+        settings = {
+          typescript = {
+            updateImportsOnFileMove = { enabled = 'always' },
+            suggest = {
+              completeFunctionCalls = true,
+            },
+            inlayHints = {
+              parameterNames = { enabled = 'literals' },
+              parameterTypes = { enabled = true },
+              variableTypes = { enabled = true },
+              propertyDeclarationTypes = { enabled = true },
+              functionLikeReturnTypes = { enabled = true },
+              enumMemberValues = { enabled = true },
+            },
+          },
+        },
+      },
 
       lua_ls = {
         -- cmd = {...},
@@ -151,10 +169,11 @@ return { -- LSP Configuration & Plugins
       'prisma-language-server',
       'prettier',
       'eslint_d',
-      'eslint-lsp',
+      -- 'eslint-lsp',
       'json-lsp',
       'lua-language-server',
-      'typescript-language-server',
+      -- 'typescript-language-server',
+      'vtsls',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -192,7 +211,7 @@ return { -- LSP Configuration & Plugins
       end,
       automatic_installation = true,
       ensure_installed = {
-        'eslint',
+        'vtsls',
       },
     }
   end,
