@@ -42,6 +42,13 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+-- get rid of swapfiles
+vim.opt.swapfile = false
+
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+
 -- [[ Basic Keymaps ]]
 vim.keymap.set('n', '<leader>w', '<cmd>w<cr>', { desc = 'Save file' })
 vim.keymap.set('n', '<leader>q', '<cmd>confirm q<cr>', { desc = 'Quit' })
@@ -52,17 +59,54 @@ vim.keymap.set('n', '<leader>gg', '<cmd>:LazyGit<cr>', { desc = 'Lazygit' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 -- Remove unused imports on save
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+-- vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+--   group = vim.api.nvim_create_augroup('ts_imports', { clear = true }),
+--   pattern = { '*.tsx', '*.ts' },
+--   callback = function()
+--     vim.lsp.buf.code_action {
+--       apply = true,
+--       context = {
+--         only = { 'source.removeUnused.ts' },
+--         diagnostics = {},
+--       },
+--     }
+--   end,
+--
+-- })
+
+vim.api.nvim_create_autocmd('BufWritePost', {
   group = vim.api.nvim_create_augroup('ts_imports', { clear = true }),
-  pattern = { '*.tsx,*.ts' },
-  callback = function()
-    vim.lsp.buf.code_action {
-      apply = true,
+  pattern = { '*.tsx', '*.ts' },
+  callback = function(args)
+    local params = {
+      textDocument = vim.lsp.util.make_text_document_params(args.buf),
+      range = {
+        start = { line = 0, character = 0 },
+        ['end'] = { line = vim.fn.line '$', character = 0 },
+      },
       context = {
         only = { 'source.removeUnused.ts' },
         diagnostics = {},
       },
     }
+
+    local result = vim.lsp.buf_request_sync(args.buf, 'textDocument/codeAction', params, 3000)
+
+    if result then
+      for _, res in pairs(result) do
+        if res.result then
+          for _, action in pairs(res.result) do
+            if action.edit then
+              vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
+            elseif action.command then
+              vim.lsp.buf.execute_command(action.command)
+            end
+          end
+        end
+      end
+      -- Auto-save after removing unused code
+      vim.cmd 'silent! write'
+    end
   end,
 })
 
