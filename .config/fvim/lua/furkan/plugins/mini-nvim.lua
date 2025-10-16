@@ -28,9 +28,16 @@ return { -- Collection of various small independent plugins/modules
         -- Width of non-focused window
         width_nofocus = 15,
         -- Width of preview window
-        width_preview = 25,
+        width_preview = 40,
       },
     }
+
+    require('mini.diff').setup()
+
+    vim.keymap.set('n', '<leader>go', function()
+      local miniDiff = require 'mini.diff'
+      miniDiff.toggle_overlay()
+    end, { desc = 'Toggle Mini Diff' })
 
     vim.keymap.set('n', '<leader>e', function()
       local buf_name = vim.api.nvim_buf_get_name(0)
