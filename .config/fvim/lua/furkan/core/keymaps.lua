@@ -1,6 +1,3 @@
--- TODO: find a way to move all keymappins inside this file
--- vim.keymap.set('n', '<leader>w', '<cmd>w<cr>', { desc = 'Save file' })
-
 -- C-d & C-u disorientation fix
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Center cursor after moving down half-page' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Center cursor after moving up half-page' })
@@ -15,15 +12,9 @@ vim.keymap.set('n', '<leader>q', '<cmd>confirm q<cr>', { desc = 'Quit' })
 vim.keymap.set('n', '<leader>n', '<cmd>enew<cr>', { desc = 'New file' })
 vim.keymap.set('n', '<leader>c', '<cmd>:bw<cr>', { desc = 'Close buffer' })
 
--- Lazygit
-vim.keymap.set('n', '<leader>gg', '<cmd>:LazyGit<cr>', { desc = 'Lazygit' })
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-
--- Noice ignore keymap
-vim.keymap.set('n', '<leader>dn', '<cmd>NoiceDismiss<cr>', { desc = '[D]elete [N]otifications' })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
