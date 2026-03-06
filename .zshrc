@@ -3,6 +3,9 @@ export GOPATH="$HOME/go"
 #export GOBIN=$GOPATH/bin
 #export PATH=$PATH:$GOPATH
 #export PATH=$PATH:$GOROOT/bin
+# fix mac folder permission issue (vtsls | lazygit)
+export TMPDIR="$HOME/.tmp"
+mkdir -p "$TMPDIR"
 
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -223,3 +226,6 @@ fi
 
 # zsh-vim mode
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+# Added by Antigravity
+export PATH="/Users/furkan/.antigravity/antigravity/bin:$PATH"
