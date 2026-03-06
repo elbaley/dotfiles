@@ -1,17 +1,8 @@
-;; Kanata docs
-;; https://github.com/jtroo/kanata/blob/main/docs/config.adoc
-
-;; OS key code mappings
-;; https://github.com/jtroo/kanata/blob/main/parser/src/keys/mod.rs
-
 (defcfg
   process-unmapped-keys yes
   log-layer-changes no
   danger-enable-cmd yes
   concurrent-tap-hold yes
-  ;; When any non-chord activation happens, this timeout begins. Until this timeout expires
-  ;; all inputs will immediately skip chords processing and be processed by the active layer.
-  ;; chords-v2-min-idle 250
 )
 
 ;; Variables
@@ -28,8 +19,7 @@
  fast-mouse-max-speed 20
 )
 
-;; Only one defsrc is allowed.
-;;
+;; Only one defsrc is allowed!
 ;; defsrc defines the keys that will be intercepted by kanata. The order of the
 ;; keys matches with deflayer declarations and all deflayer declarations must
 ;; have the same number of keys as defsrc. Any keys not listed in defsrc will
@@ -45,32 +35,30 @@
 
 (deftemplate charmod (char mod)
   (switch 
-    ((key-timing 3 less-than 250)) $char break
+    ((key-timing 3 less-than 350)) $char break
     () (tap-hold-release-timeout 200 500 $char $mod $char) break
   )
 )
 
-
-;; 
 (defalias
   toggledarkmode (cmd "/Users/furkan/bin/toggle_dark_mode")
+  togglemacdisplay (cmd "/Users/furkan/bin/toggle_mac_display")
+  togglemacmenu (cmd "/Users/furkan/bin/toggle_menu")
   maximizeapp (cmd "/Users/furkan/bin/maximize")
 )
 
 ;; applications aliases
 (defalias
   atelegram (cmd "/Users/furkan/bin/toggle_app" "Telegram")
-  achrome (cmd "/Users/furkan/bin/toggle_app" "Google Chrome")
+  azen (cmd "/Users/furkan/bin/toggle_app" "Zen")
+  achrome (cmd "/Users/furkan/bin/toggle_app" "Helium")
   aslack (cmd "/Users/furkan/bin/toggle_app" "Slack")
   apostman (cmd "/Users/furkan/bin/toggle_app" "Postman")
   akitty (cmd "/Users/furkan/bin/toggle_app" "kitty")
+  avscode (cmd "/Users/furkan/bin/toggle_app" "Code")
   asimulator (cmd "/Users/furkan/bin/toggle_app" "Simulator")
   aobsidian (cmd "/Users/furkan/bin/toggle_app" "Obsidian")
 )
-
-;; (defchords bas-chords 200
-;;   (            kbs) (tap-hold-release 200 200 s (unicode "ş"))
-;; )
 
 ;; snippet aliases
 (defalias
@@ -82,52 +70,31 @@
   type-identity (cmd sudo -u furkan bash  "/Users/furkan/bin/type_secret" "IDENTITYNO")
 )
 
+;; copy paste 
+
 ;; mouse aliases
 (defalias
  movemouse-left (movemouse-accel-left 10 500 $mouse-min-speed $mouse-max-speed)
 )
 
 (defalias
-  ;; Modifier keys
-  mlmetOLD (tap-hold $tap-time $hold-time d lmet)
   mlmet (t! charmod d lmet)
-
-  mrmetOLD (tap-hold $tap-time $hold-time k rmet)
   mrmet (t! charmod k rmet)
-
-
-  mlaltOLD (tap-hold $tap-time $hold-time f lalt)
   mlalt (t! charmod f lalt)
-
-  mraltOLD (tap-hold $tap-time $hold-time j ralt)
   mralt (t! charmod j lalt)
-
-  mral2OLD (tap-hold $tap-time $hold-time ' ralt)
   mral2 (t! charmod ' ralt)
-
-
-  mlctlOLD (tap-hold $tap-time $hold-time a lctl)
   mlctl (t! charmod a lctl)
-
-
-  mrctlOLD (tap-hold $tap-time 200 l lctl)
   mrctl (t! charmod l rctl)
 
-
   mfntab (tap-hold $tap-time $hold-time tab fn)
-
-
   mmtab (tap-hold $tap-time $hold-time z M-tab)
+  mmv (tap-hold $tap-time $hold-time v M-v)
+  mmcp (tap-hold $tap-time $hold-time z M-tab)
   mmgrv (tap-hold $tap-time $hold-time x M-grv)
   mescc (tap-hold $tap-time $hold-time esc caps)
-  ;; maltt (tap-hold $tap-time $hold-time b (macro @aghost 100 C-b 20 spc)) ;; tmux alternate session
-  ;; mtcop (tap-hold $tap-time $hold-time m (macro @aghost 100 C-b 20 v)) ;; tmux copy mode
   mretu (tap-hold $tap-time $hold-time tab ret)
 
   ;; Other layers tap-hold-press
-  ;; mapr configured for both the glove80 and the macbook keyboard
-  mappr (tap-hold-press $tap-time $hold-time ret (layer-toggle apps))
-  ;; msymb (tap-hold-press $tap-time $hold-time bspc (layer-toggle symb))
   mcaps (tap-hold-press $tap-time $hold-time esc (layer-toggle capslayer))
   mdot (tap-hold $tap-time 400 . (layer-toggle dotlayer))
   mquote (tap-hold-press $tap-time $hold-time ' (layer-toggle quoteLayer))
@@ -135,27 +102,16 @@
   mfaster (tap-hold-press $tap-time $hold-time (layer-toggle spaceLayerFaster) (layer-toggle spaceLayerFaster)) 
 
   mnum (layer-switch numLayer)
+  mlock (layer-switch lockedLayer)
   mnumtoggle (layer-switch main)
   mnumlyr (layer-toggle numLayer)
 
   mshft (tap-hold-press $tap-time $hold-time rshft (layer-toggle shiftLayer))
 
-  ;; Other layers tap-hold
-  ;; msyst (tap-hold $tap-time $hold-time s (layer-toggle syst))
-
-
   ;; Multi
-  mhypr (tap-hold $tap-time $hold-time spc (multi lsft lctl lalt lmet)) ;; Hyper key
   mconsolelog (tap-hold $tap-time $hold-time a (macro c o n s o l e . l o g S-9 S-0)) ;; log
 
-  ;; Execute script
-  ;; maltt (cmd open "btt://execute_assigned_actions_for_trigger/?uuid=F35EF770-FAA5-448A-957D-70BB449DEB0F")
-
-  ;; key and script at the same time
-  ;; maltt (tap-hold $tap-time $hold-time lsft (cmd open "btt://execute_assigned_actions_for_trigger/?uuid=F35EF770-FAA5-448A-957D-70BB449DEB0F"))
-
   ;; Turkish accent 
-  ;;  s-accent-old (tap-dance 120 ((chord bas-chords kbs) s))
   s-accent (tap-hold $tap-time $hold-time s  (unicode "ş"))
   s-accent-upper (tap-hold $tap-time $hold-time S-s  (unicode "Ş"))
   i-accent (tap-hold $tap-time $hold-time i  (unicode "ı"))
@@ -165,6 +121,7 @@
   u-accent (tap-hold $tap-time $hold-time u  (unicode "ü"))
   u-accent-upper (tap-hold $tap-time $hold-time S-u  (unicode "Ü"))
   c-accent (tap-hold $tap-time $hold-time c  (unicode "ç"))
+  c-accent-tapdance (tap-dance $tap-time (c  M-c (unicode "ç")))
   c-accent-upper (tap-hold $tap-time $hold-time S-c  (unicode "Ç"))
   o-accent (tap-hold $tap-time $hold-time o  (unicode "ö"))
   o-accent-upper (tap-hold $tap-time $hold-time S-o  (unicode "Ö"))
@@ -176,16 +133,28 @@
   7 7
 )
 
+;; main-layer
 ;; Set cmd on "d" due to cmd+r, cmd+f
 (deflayer main
   ;;     a      s      d      f      g      h     j      k      l      ;      '
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
-  @mnum    1    2    3    4    5    6    7    8    9    0    -    =    XX
+  @mnum    1    2    3    4    5    6    7    8    9    0    -    =    @togglemacdisplay 
   @mretu    q    w    e    r    t    y    @u-accent    @i-accent    @o-accent    p    [    ]
-  @mcaps   @mlctl    @s-accent    @mlmet    @mlalt    @g-accent    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  ret
-  @mshft  ` z    @mmgrv    @c-accent    v    b    n    m    ,    @mdot    /    ▲   @mshft
-  fn   M-C-S-0  lalt XX          @mspc         bspc M-C-S-4 ◀    ▼    M-S-spc  
+  @mcaps   @mlctl    @s-accent    @mlmet    @mlalt    @g-accent    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  XX
+  @mshft  ` @mmtab    @mmgrv    @c-accent-tapdance   @mmv    b    n    m    ,    @mdot    /    ▲   @mshft
+  M-C-S-4   M-C-S-0  lmet ret          @mspc         bspc XX ◀    ▼    M-S-spc  
 )       
+
+
+(deflayer lockedLayer
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  XX    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX  XX
+  lsft  XX XX    XX    XX    XX   XX     XX    XX    XX    XX    XX    XX   rsft
+  XX   XX  XX XX          XX         XX XX XX    ▼    XX  
+)
 
 ;; num_layer
 (deflayer numLayer
@@ -203,19 +172,19 @@
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
   IntlBackslash    S-1    S-2    S-3    S-4    S-5    S-6    S-7    S-8    S-9    S-0    S--    S-=    bspc
   S-tab    S-q    S-w    S-e    S-r    S-t    S-y    @u-accent-upper    @i-accent-upper    @o-accent-upper    S-p    S-[    S-]
-  @mcaps   S-a    @s-accent-upper    S-d   S-f    @g-accent-upper    S-h    S-j    S-k    S-l   S-;    S-'   S-\  S-ret
+  @mcaps   S-a    @s-accent-upper    S-d   S-f    @g-accent-upper    S-h    S-j    S-k    S-l   S-;    S-'   S-\  XX
   lsft  S-` S-z    S-x    @c-accent-upper    S-v    S-b    S-n    S-m    S-,    S-.    S-/    ▲   rsft
-  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
+  fn   lctl  lalt S-ret          spc         rmet ralt ◀    ▼    ▶  
 )   
 
-;; caps_layer                                  J                                                                                                                                                               
+;; caps-layer 
 (deflayer capslayer    
   ;;   a      s       d       f       g       h       j       k       l       ;       '
   esc    🔅   🔆    f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   IntlBackslash    @atelegram    @achrome    @aslack    @apostman    5   6    7    8    9    0    -    =    bspc
   tab    @type-macos-login    w    e    @akitty    t    y    u    @asimulator    o    p    [    ]
   caps   C-S-tab    C-tab     rsft    ralt    g    ◀       ▼       ▲       ▶      ;    '   \  ret
-  lsft  ` z    x    c    v    b    A-bspc    @aobsidian   ,    .    /    ▲   rsft
+  lsft  ` z    x    c    @avscode    @azen    A-bspc    @aobsidian   ,    .    /    ▲   rsft
   fn   lctl  lalt lmet          C-a         rmet ralt ◀    ▼    ▶
 )
 
@@ -225,7 +194,7 @@
   tab    q    (unicode 💀)    e    r    t    y    u    i    o    p    [    ]
   caps   (macro c o n s o l e . l o g S-9 S-0 ◀)    (macro = S-.)    d    f    g    h    j    k    l    ;    '   \  ret
   lsft  ` z    (unicode ❌)    (unicode ✅)    (unicode 🚀)    (unicode 🐞)    n    @maximizeapp    ,    .    /    ▲   rsft
-  fn   lctl  lalt lmet          @toggledarkmode         rmet ralt ◀    ▼    ▶
+  fn   lctl  lalt @togglemacmenu          @toggledarkmode         rmet ralt ◀    ▼    ▶
 )
 
 (deflayer quoteLayer
@@ -258,20 +227,14 @@
   fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
 )  
 
-(deflayer apps
-  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab    q    w    e    r    t    y    u    i    o    p    [    ]
-  caps   a    s    d    f    g    h    j    k    l    ;    '   \  ret
-  lsft  ` z    x    c    v    b    n    m    ,    .    /    ▲   rsft
-  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶
-)
-
 (defchordsv2
   ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
   (1 2 3) vold $chord-time first-release ()
+	(◀ ▼ ▶) @mnumtoggle $chord-time first-release ()
+  (rshft lshft spc) @mlock $chord-time first-release ()
   ([ p ]) volu $chord-time first-release ()
   (IntlBackslash 1 2) 🔅 $chord-time first-release ()
   (0 - =) 🔆 $chord-time first-release ()
   (rshft mlft) (macro rshft 5 mlft) $chord-time first-release ()
 )
+
