@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# toggle_mac_display.sh
+# Toggles the built-in MacBook display using displayplacer and monitor.py.
+#
+#
+
+echo "PATH=$PATH"
+ls -l /opt/homebrew/bin/displayplacer
+
+DISPLAYPLACER="/opt/homebrew/bin/displayplacer"
+PYTHON="/usr/bin/python3"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+MAC_DISPLAY_ID="37D8832A-2D66-02CA-B9F7-8F30A301B230"
+
+# Get current displayplacer output
+current_state=$($DISPLAYPLACER list)
+
+# If the MacBook display ID is found in the output, it’s currently enabled
+if echo "$current_state" | grep -q "$MAC_DISPLAY_ID"; then
+    echo "💤 MacBook display is currently enabled — disabling it..."
+    $DISPLAYPLACER "id:$MAC_DISPLAY_ID enabled:false"
+else
+    echo "💡 MacBook display is currently disabled — enabling it..."
+    $PYTHON "$SCRIPT_DIR/monitor.py"
+fi
+

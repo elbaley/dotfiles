@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
 app="$1"
+
+if [ "$app" = "Slack" ]; then
+  osascript -e "set appName to \"Safari\"" \
+    -e 'if application appName is running then' \
+    -e 'tell application "System Events"' \
+    -e 'if frontmost of application process appName is true then' \
+    -e 'tell application "System Events" to keystroke "1" using command down' \
+    -e 'else' \
+    -e 'set visible of application process appName to true' \
+    -e 'set frontmost of application process appName to true' \
+    -e 'tell application "System Events" to keystroke "1" using command down' \
+    -e 'end if' \
+    -e 'end tell' \
+    -e 'else' \
+    -e 'tell application appName to activate' \
+    -e 'end if'
+    exit 0
+fi
+
+
+if [ "$app" = "Postman" ]; then
+  osascript -e "set appName to \"Zen\"" \
+    -e 'if application appName is running then' \
+    -e 'tell application "System Events"' \
+    -e 'if frontmost of application process appName is true then' \
+    -e 'tell application "System Events" to keystroke "2" using command down' \
+    -e 'else' \
+    -e 'set visible of application process appName to true' \
+    -e 'set frontmost of application process appName to true' \
+    -e 'tell application "System Events" to keystroke "2" using command down' \
+    -e 'end if' \
+    -e 'end tell' \
+    -e 'else' \
+    -e 'tell application appName to activate' \
+    -e 'end if'
+    exit 0
+fi
+
 osascript -e "set appName to \"$app\"" \
  -e 'if application appName is running then' \
  -e 'tell application "System Events"' \
@@ -13,3 +51,4 @@ osascript -e "set appName to \"$app\"" \
  -e 'else' \
  -e 'tell application appName to activate' \
  -e 'end if'
+
