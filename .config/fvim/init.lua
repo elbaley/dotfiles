@@ -1,4 +1,4 @@
--- vim.opt.termguicolors = true
+--vim.opt.termguicolors = true
 require 'furkan.core.keymaps'
 
 -- See `:help mapleader`
@@ -74,41 +74,42 @@ vim.keymap.set('n', '<leader>gg', '<cmd>:LazyGit<cr>', { desc = 'Lazygit' })
 --
 -- })
 
-vim.api.nvim_create_autocmd('BufWritePost', {
-  group = vim.api.nvim_create_augroup('ts_imports', { clear = true }),
-  pattern = { '*.tsx', '*.ts' },
-  callback = function(args)
-    local params = {
-      textDocument = vim.lsp.util.make_text_document_params(args.buf),
-      range = {
-        start = { line = 0, character = 0 },
-        ['end'] = { line = vim.fn.line '$', character = 0 },
-      },
-      context = {
-        only = { 'source.removeUnused.ts' },
-        diagnostics = {},
-      },
-    }
-
-    local result = vim.lsp.buf_request_sync(args.buf, 'textDocument/codeAction', params, 3000)
-
-    if result then
-      for _, res in pairs(result) do
-        if res.result then
-          for _, action in pairs(res.result) do
-            if action.edit then
-              vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
-            elseif action.command then
-              vim.lsp.buf.execute_command(action.command)
-            end
-          end
-        end
-      end
-      -- Auto-save after removing unused code
-      vim.cmd 'silent! write'
-    end
-  end,
-})
+-- WORKING save
+-- vim.api.nvim_create_autocmd('BufWritePost', {
+--   group = vim.api.nvim_create_augroup('ts_imports', { clear = true }),
+--   pattern = { '*.tsx', '*.ts' },
+--   callback = function(args)
+--     local params = {
+--       textDocument = vim.lsp.util.make_text_document_params(args.buf),
+--       range = {
+--         start = { line = 0, character = 0 },
+--         ['end'] = { line = vim.fn.line '$', character = 0 },
+--       },
+--       context = {
+--         only = { 'source.removeUnused.ts' },
+--         diagnostics = {},
+--       },
+--     }
+--
+--     local result = vim.lsp.buf_request_sync(args.buf, 'textDocument/codeAction', params, 3000)
+--
+--     if result then
+--       for _, res in pairs(result) do
+--         if res.result then
+--           for _, action in pairs(res.result) do
+--             if action.edit then
+--               vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
+--             elseif action.command then
+--               vim.lsp.buf.execute_command(action.command)
+--             end
+--           end
+--         end
+--       end
+--       -- Auto-save after removing unused code
+--       vim.cmd 'silent! write'
+--     end
+--   end,
+-- })
 
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -136,7 +137,6 @@ require('lazy').setup {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- Load the colorscheme here
-      -- vim.cmd [[colorscheme tokyonight-moon]]
       -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
     end,
@@ -191,3 +191,64 @@ vim.api.nvim_create_autocmd('RecordingLeave', {
     )
   end,
 })
+
+vim.cmd 'colorscheme minigreen'
+
+vim.api.nvim_create_user_command('ELC', function()
+  -- 1. "Başladı" bildirimi (Anında görünür)
+  vim.notify('ESLint check started, sit back and relax... 🚀', vim.log.levels.INFO, {
+    title = 'ESLint Check',
+  })
+
+  local qf_items = {}
+  local cmd = { 'npx', 'eslint', '.', '--format', 'json' }
+
+  -- 2. Asenkron sistem çağrısı
+  vim.system(cmd, { text = true }, function(obj)
+    -- Bu fonksiyon ESLint bittiğinde çalışır (callback)
+
+    -- Neovim UI işlemlerini (quickfix, notify) ana thread'de yapmalıyız
+    vim.schedule(function()
+      if obj.code ~= 0 and obj.stdout == '' then
+        vim.notify('ESLint error: ' .. (obj.stderr or 'Unknown error'), vim.log.levels.ERROR)
+        return
+      end
+
+      local ok, decoded = pcall(vim.fn.json_decode, obj.stdout)
+      if not ok or not decoded then
+        -- Hata yoksa ESLint bazen boş dönebilir veya config hatası olabilir
+        vim.notify('No result!', vim.log.levels.INFO)
+        return
+      end
+
+      -- JSON'ı işle
+      for _, file in ipairs(decoded) do
+        for _, msg in ipairs(file.messages) do
+          table.insert(qf_items, {
+            filename = file.filePath,
+            lnum = msg.line or 1,
+            col = msg.column or 1,
+            text = msg.message .. ' [' .. (msg.ruleId or 'unknown') .. ']',
+            type = msg.severity == 2 and 'E' or 'W',
+          })
+        end
+      end
+
+      -- 3. Sonuçları yansıt
+      if #qf_items > 0 then
+        vim.fn.setqflist(qf_items, 'r')
+        vim.fn.setqflist({}, 'a', { title = 'ESLint Project Errors' })
+        vim.cmd 'copen'
+        vim.notify('Eslint check  finished: ' .. #qf_items .. ' errors found. 👀', vim.log.levels.WARN, {
+          title = 'ESLint Finished',
+        })
+      else
+        vim.cmd 'cclose'
+        vim.notify('Hooray! No errors found 🎉.', vim.log.levels.INFO, {
+          title = 'ESLint Finished',
+          icon = '',
+        })
+      end
+    end)
+  end)
+end, { desc = 'Donma yapmayan asenkron ESLint taraması' })

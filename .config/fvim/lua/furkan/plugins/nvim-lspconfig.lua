@@ -192,14 +192,14 @@ return { -- LSP Configuration & Plugins
             }
 
             -- auto fix
-            vim.api.nvim_create_autocmd('BufWritePre', {
-              pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
-              callback = function()
-                if vim.fn.exists ':EslintFixAll' == 2 then
-                  vim.cmd 'EslintFixAll'
-                end
-              end,
-            })
+            --            vim.api.nvim_create_autocmd('BufWritePre', {
+            --              pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
+            --             callback = function()
+            --                if vim.fn.exists ':EslintFixAll' == 2 then
+            --                  vim.cmd 'EslintFixAll'
+            --                end
+            --              end,
+            --            })
           end
 
           require('lspconfig')[server_name].setup(server)
