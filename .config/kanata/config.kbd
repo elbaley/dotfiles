@@ -40,6 +40,13 @@
   )
 )
 
+(deftemplate charmod-slow (char mod)
+  (switch 
+    ((key-timing 3 less-than 600)) $char break
+    () (tap-hold-release-timeout 200 750 $char $mod $char) break
+  )
+)
+
 (defalias
   toggledarkmode (cmd "/Users/furkan/bin/toggle_dark_mode")
   togglemacdisplay (cmd "/Users/furkan/bin/toggle_mac_display")
@@ -84,11 +91,13 @@
   mralt (t! charmod j lalt)
   mral2 (t! charmod ' ralt)
   mlctl (t! charmod a lctl)
+  mlctl-slow (t! charmod-slow a lctl)
   mrctl (t! charmod l rctl)
 
   mfntab (tap-hold $tap-time $hold-time tab fn)
   mmtab (tap-hold $tap-time $hold-time z M-tab)
   mmv (tap-hold $tap-time $hold-time v M-v)
+  mmc (tap-hold $tap-time $hold-time c M-c)
   mmcp (tap-hold $tap-time $hold-time z M-tab)
   mmgrv (tap-hold $tap-time $hold-time x M-grv)
   mescc (tap-hold $tap-time $hold-time esc caps)
@@ -101,12 +110,12 @@
   mspc (tap-hold $tap-time $hold-time spc (layer-toggle spaceLayer)) 
   mfaster (tap-hold-press $tap-time $hold-time (layer-toggle spaceLayerFaster) (layer-toggle spaceLayerFaster)) 
 
-  mnum (layer-switch numLayer)
+  mturk (layer-switch turkishLayer)
+  mturkback (layer-switch main)
   mlock (layer-switch lockedLayer)
-  mnumtoggle (layer-switch main)
-  mnumlyr (layer-toggle numLayer)
 
   mshft (tap-hold-press $tap-time $hold-time rshft (layer-toggle shiftLayer))
+  mturkshft (tap-hold-press $tap-time $hold-time rshft (layer-toggle turkishShiftLayer))
 
   ;; Multi
   mconsolelog (tap-hold $tap-time $hold-time a (macro c o n s o l e . l o g S-9 S-0)) ;; log
@@ -121,7 +130,6 @@
   u-accent (tap-hold $tap-time $hold-time u  (unicode "ü"))
   u-accent-upper (tap-hold $tap-time $hold-time S-u  (unicode "Ü"))
   c-accent (tap-hold $tap-time $hold-time c  (unicode "ç"))
-  c-accent-tapdance (tap-dance $tap-time (c  M-c (unicode "ç")))
   c-accent-upper (tap-hold $tap-time $hold-time S-c  (unicode "Ç"))
   o-accent (tap-hold $tap-time $hold-time o  (unicode "ö"))
   o-accent-upper (tap-hold $tap-time $hold-time S-o  (unicode "Ö"))
@@ -138,10 +146,10 @@
 (deflayer main
   ;;     a      s      d      f      g      h     j      k      l      ;      '
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
-  @mnum    1    2    3    4    5    6    7    8    9    0    -    =    @togglemacdisplay 
-  @mretu    q    w    e    r    t    y    @u-accent    @i-accent    @o-accent    p    [    ]
-  @mcaps   @mlctl    @s-accent    @mlmet    @mlalt    @g-accent    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  XX
-  @mshft  ` @mmtab    @mmgrv    @c-accent-tapdance   @mmv    b    n    m    ,    @mdot    /    ▲   @mshft
+  @mturk    1    2    3    4    5    6    7    8    9    0    -    =    @togglemacdisplay 
+  @mretu    q    w    e    r    t    y    u    i    o    p    [    ]
+  @mcaps   @mlctl-slow    s    @mlmet    @mlalt    g    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  XX
+  @mshft  ` @mmtab    @mmgrv    @mmc   @mmv    b    n    m    ,    @mdot    /    ▲   @mshft
   M-C-S-4   M-C-S-0  lmet ret          @mspc         bspc XX ◀    ▼    M-S-spc  
 )       
 
@@ -157,23 +165,33 @@
 )
 
 ;; num_layer
-(deflayer numLayer
+(deflayer turkishLayer
   ;;     a      s      d      f      g      h     j      k      l      ;      '
-  XX    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    bspc
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX   1    2    3    4    5    6    7    8    9    0    XX   XX  @mnumtoggle 
-  XX  XX XX    XX    XX    XX    XX    XX    XX    ,    .    XX    XX   XX
-  XX   XX  XX XX          spc         bspc XX XX    XX    XX  
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  @mturkback    1    2    3    4    5    6    7    8    9    0    -    =    @togglemacdisplay
+  @mretu    q    w    e    r    t    y    u    (unicode "ı")    o    p    (unicode "ğ")    (unicode "ü")
+  @mcaps   @mlctl-slow    s    @mlmet    @mlalt    g    h    @mralt    @mrmet    @mrctl    (unicode "ş")    i   \  XX
+  @mturkshft  ` @mmtab    @mmgrv    c    @mmv    b    n    m    (unicode "ö")    (unicode "ç")    /    ▲   @mturkshft
+  M-C-S-4   M-C-S-0  lmet ret          @mspc         bspc XX ◀    ▼    M-S-spc  
+)
+
+(deflayer turkishShiftLayer
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
+  @mturkback    S-1    S-2    S-3    S-4    S-5    S-6    S-7    S-8    S-9    S-0    S--    S-=    @togglemacdisplay
+  S-tab    S-q    S-w    S-e    S-r    S-t    S-y    S-u    (unicode "I")    S-o    S-p    (unicode "Ğ")    (unicode "Ü")
+  @mcaps   S-a    S-s    S-d    S-f    S-g    S-h    S-j    S-k    S-l    (unicode "Ş")    (unicode "İ")   S-\  XX
+  @mturkshft  S-` S-z    S-x    S-c    S-v    S-b    S-n    S-m    (unicode "Ö")    (unicode "Ç")    S-/    ▲   @mturkshft
+  fn   lctl  lalt S-ret          spc         rmet ralt ◀    ▼    ▶  
 )
 
 (deflayer shiftLayer 
   ;;     a      s      d      f      g      h     j      k      l      ;      '
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
-  IntlBackslash    S-1    S-2    S-3    S-4    S-5    S-6    S-7    S-8    S-9    S-0    S--    S-=    bspc
-  S-tab    S-q    S-w    S-e    S-r    S-t    S-y    @u-accent-upper    @i-accent-upper    @o-accent-upper    S-p    S-[    S-]
-  @mcaps   S-a    @s-accent-upper    S-d   S-f    @g-accent-upper    S-h    S-j    S-k    S-l   S-;    S-'   S-\  XX
-  lsft  S-` S-z    S-x    @c-accent-upper    S-v    S-b    S-n    S-m    S-,    S-.    S-/    ▲   rsft
+  @mturk    S-1    S-2    S-3    S-4    S-5    S-6    S-7    S-8    S-9    S-0    S--    S-=    bspc
+  S-tab    S-q    S-w    S-e    S-r    S-t    S-y    S-u    S-i    S-o    S-p    S-[    S-]
+  @mcaps   S-a    S-s    S-d   S-f    S-g    S-h    S-j    S-k    S-l   S-;    S-'   S-\  XX
+  lsft  S-` S-z    S-x    S-c    S-v    S-b    S-n    S-m    S-,    S-.    S-/    ▲   rsft
   fn   lctl  lalt S-ret          spc         rmet ralt ◀    ▼    ▶  
 )   
 
@@ -230,11 +248,9 @@
 (defchordsv2
   ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
   (1 2 3) vold $chord-time first-release ()
-	(◀ ▼ ▶) @mnumtoggle $chord-time first-release ()
   (rshft lshft spc) @mlock $chord-time first-release ()
   ([ p ]) volu $chord-time first-release ()
   (IntlBackslash 1 2) 🔅 $chord-time first-release ()
   (0 - =) 🔆 $chord-time first-release ()
   (rshft mlft) (macro rshft 5 mlft) $chord-time first-release ()
 )
-
