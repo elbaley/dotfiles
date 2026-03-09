@@ -1,54 +1,47 @@
 #!/usr/bin/env bash
 app="$1"
 
-if [ "$app" = "Slack" ]; then
-  osascript -e "set appName to \"Safari\"" \
-    -e 'if application appName is running then' \
-    -e 'tell application "System Events"' \
-    -e 'if frontmost of application process appName is true then' \
-    -e 'tell application "System Events" to keystroke "1" using command down' \
-    -e 'else' \
-    -e 'set visible of application process appName to true' \
-    -e 'set frontmost of application process appName to true' \
-    -e 'tell application "System Events" to keystroke "1" using command down' \
-    -e 'end if' \
-    -e 'end tell' \
-    -e 'else' \
-    -e 'tell application appName to activate' \
-    -e 'end if'
-    exit 0
-fi
+# Special app routing: map aliases to actual app targets + optional tab switch
+# Slack -> Safari (cmd+1), Postman -> Zen (cmd+2)
+case "$app" in
+  Slack)
+    app_target="Safari"
+    tab_key="1"
+    ;;
+  Postman)
+    app_target="Zen"
+    tab_key="2"
+    ;;
+  *)
+    app_target="$app"
+    tab_key=""
+    ;;
+esac
 
+osascript - "$app_target" "$tab_key" <<'EOF_APPLESCRIPT'
+on run argv
+  if (count of argv) < 1 then return
+  set appName to item 1 of argv
+  set tabKey to ""
+  if (count of argv) > 1 then set tabKey to item 2 of argv
 
-if [ "$app" = "Postman" ]; then
-  osascript -e "set appName to \"Zen\"" \
-    -e 'if application appName is running then' \
-    -e 'tell application "System Events"' \
-    -e 'if frontmost of application process appName is true then' \
-    -e 'tell application "System Events" to keystroke "2" using command down' \
-    -e 'else' \
-    -e 'set visible of application process appName to true' \
-    -e 'set frontmost of application process appName to true' \
-    -e 'tell application "System Events" to keystroke "2" using command down' \
-    -e 'end if' \
-    -e 'end tell' \
-    -e 'else' \
-    -e 'tell application appName to activate' \
-    -e 'end if'
-    exit 0
-fi
+  set frontApp to ""
+  try
+    tell application "System Events"
+      set frontApp to name of first application process whose frontmost is true
+    end tell
+  end try
 
-osascript -e "set appName to \"$app\"" \
- -e 'if application appName is running then' \
- -e 'tell application "System Events"' \
- -e 'if frontmost of application process appName is true then' \
- -e 'set visible of application process appName to false' \
- -e 'else' \
- -e 'set visible of application process appName to true' \
- -e 'set frontmost of application process appName to true' \
- -e 'end if' \
- -e 'end tell' \
- -e 'else' \
- -e 'tell application appName to activate' \
- -e 'end if'
-
+  if appName is frontApp then
+    -- Use System Events to hide reliably across apps
+    try
+      tell application "System Events" to set visible of application process appName to false
+    end try
+  else
+    tell application appName to activate
+    if tabKey is not "" then
+      tell application "System Events" to keystroke tabKey using command down
+    end if
+  end if
+end run
+EOF_APPLESCRIPT
