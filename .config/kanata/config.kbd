@@ -57,7 +57,7 @@
 ;; applications aliases
 (defalias
   atelegram (cmd "/Users/furkan/bin/toggle_app" "Telegram")
-  azen (cmd "/Users/furkan/bin/toggle_app" "Zen")
+  asharing (cmd "/Users/furkan/bin/toggle_app" "Screen Sharing")
   achrome (cmd "/Users/furkan/bin/toggle_app" "Helium")
   aslack (cmd "/Users/furkan/bin/toggle_app" "Slack")
   apostman (cmd "/Users/furkan/bin/toggle_app" "Postman")
@@ -65,6 +65,7 @@
   avscode (cmd "/Users/furkan/bin/toggle_app" "Code")
   asimulator (cmd "/Users/furkan/bin/toggle_app" "Simulator")
   aobsidian (cmd "/Users/furkan/bin/toggle_app" "Obsidian")
+  aneovide (cmd "/Users/furkan/bin/toggle_app" "neovide")
 )
 
 ;; snippet aliases
@@ -116,6 +117,7 @@
 
   mshft (tap-hold-press $tap-time $hold-time rshft (layer-toggle shiftLayer))
   mturkshft (tap-hold-press $tap-time $hold-time rshft (layer-toggle turkishShiftLayer))
+  msym (tap-hold $tap-time $hold-time ; (layer-while-held symbolLayer))
 
   ;; Multi
   mconsolelog (tap-hold $tap-time $hold-time a (macro c o n s o l e . l o g S-9 S-0)) ;; log
@@ -148,10 +150,20 @@
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
   @mturk    1    2    3    4    5    6    7    8    9    0    -    =    @togglemacdisplay 
   @mretu    q    w    e    r    t    y    u    i    o    p    [    ]
-  @mcaps   @mlctl-slow    s    @mlmet    @mlalt    g    h    @mralt    @mrmet    @mrctl    ;    @mquote   \  XX
+  @mcaps   a    s    @mlmet    @mlalt    g    h    @mralt    @mrmet    @mrctl    @msym    @mquote   \  XX
   @mshft  ` @mmtab    @mmgrv    @mmc   @mmv    b    n    m    ,    @mdot    /    ▲   @mshft
-  M-C-S-4   M-C-S-0  lmet ret          @mspc         bspc XX ◀    ▼    M-S-spc  
+  M-C-S-4   M-C-S-0  lmet ret          @mspc         bspc rpt ◀    ▼    M-S-spc  
 )       
+
+(deflayer symbolLayer
+  ;;     a      s      d      f      g      h     j      k      l      ;      '
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  IntlBackslash    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    S-1  S-/  =    S-=  t    y    -    S--  S-;  ;    [    ]
+  caps   S-9  S-0  S-[  S-]  g    h    [    ]    S-,  S-.  '    \  ret
+  lsft  ` z    x    c    v    b    n    m    ,    .    /    ▲   rsft
+  fn   lctl  lalt lmet          spc         rmet ralt ◀    ▼    ▶  
+)
 
 
 (deflayer lockedLayer
@@ -170,7 +182,7 @@
   esc    🔅   🔆   f3   f4   f5   f6   f7   f8   f9   🔇   🔉   🔊
   @mturkback    1    2    3    4    5    6    7    8    9    0    -    =    @togglemacdisplay
   @mretu    q    w    e    r    t    y    u    (unicode "ı")    o    p    (unicode "ğ")    (unicode "ü")
-  @mcaps   @mlctl-slow    s    @mlmet    @mlalt    g    h    @mralt    @mrmet    @mrctl    (unicode "ş")    i   \  XX
+  @mcaps   a    s    @mlmet    @mlalt    g    h    @mralt    @mrmet    @mrctl    (unicode "ş")    i   \  XX
   @mturkshft  ` @mmtab    @mmgrv    c    @mmv    b    n    m    (unicode "ö")    (unicode "ç")    /    ▲   @mturkshft
   M-C-S-4   M-C-S-0  lmet ret          @mspc         bspc XX ◀    ▼    M-S-spc  
 )
@@ -202,7 +214,7 @@
   IntlBackslash    @atelegram    @achrome    @aslack    @apostman    5   6    7    8    9    0    -    =    bspc
   tab    @type-macos-login    w    e    @akitty    t    y    u    @asimulator    o    p    [    ]
   caps   C-S-tab    C-tab     rsft    ralt    g    ◀       ▼       ▲       ▶      ;    '   \  ret
-  lsft  ` z    x    c    @avscode    @azen    A-bspc    @aobsidian   ,    .    /    ▲   rsft
+  lsft  ` z    x    c    @avscode    @asharing    A-bspc    @aneovide   ,    .    /    ▲   rsft
   fn   lctl  lalt lmet          C-a         rmet ralt ◀    ▼    ▶
 )
 
@@ -252,5 +264,6 @@
   ([ p ]) volu $chord-time first-release ()
   (IntlBackslash 1 2) 🔅 $chord-time first-release ()
   (0 - =) 🔆 $chord-time first-release ()
+  (rshft lshft) (macro C-a 50 f) $chord-time first-release ()
   (rshft mlft) (macro rshft 5 mlft) $chord-time first-release ()
 )
