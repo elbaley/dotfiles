@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 app="$1"
 
+# If Helium is not running, fall back to Screen Sharing
+if [[ "$app" == "Helium" ]]; then
+  if ! osascript -e 'application "Helium" is running' | grep -q true; then
+    app="Screen Sharing"
+  fi
+fi
+
 # Special app routing: map aliases to actual app targets + optional tab switch
 # Slack -> Safari (cmd+1), Postman -> Zen (cmd+2)
 case "$app" in
