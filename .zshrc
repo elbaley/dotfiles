@@ -229,3 +229,6 @@ source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # Added by Antigravity
 export PATH="/Users/furkan/.antigravity/antigravity/bin:$PATH"
+
+#zoxide
+eval "$(zoxide init zsh)"
